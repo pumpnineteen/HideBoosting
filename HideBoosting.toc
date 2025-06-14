@@ -1,0 +1,11 @@
+## Interface: 11507
+## Title: Hide Boosting
+## Notes: Hide Boost Messages
+## Author: Pump19
+## Version: 1.0.1
+## SavedVariables: HBSavedFilteredMessages, HBOptions
+
+# embeds.xml
+# Locales\Locales.xml
+
+HideBoosting.lua
