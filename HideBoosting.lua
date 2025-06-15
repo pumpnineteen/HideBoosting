@@ -146,7 +146,7 @@ local function printHelp()
     print("/hb add channel <channelName> -- add channelName to the filtered channels")
     print('/hb add filter "pattern" -- add "pattern" to the filters')
     print("/hb remove channel <channelName> -- remove channelName from the filtered channels")
-    print('/hb remove filter "pattern" -- remve "pattern" from the filters')
+    print('/hb remove filter "pattern" -- remove "pattern" from the filters')
     print("/hb reset channel -- reset the filtered channels to the defaults")
     print('/hb reset filter  -- reset the filters to the defaults')
 
