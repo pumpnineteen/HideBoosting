@@ -1,4 +1,4 @@
-## Interface: 11507
+## Interface: 11507, 40402, 50500
 ## Title: Hide Boosting
 ## Notes: Hide Boost Messages
 ## Author: Pump19
