@@ -227,12 +227,43 @@ local function toggleLog()
     end
 end
 
-local function listFilters()
-    for _, v in ipairs(filters) do
-        if v.pattern then
-            print("Except: P:", v.pattern, "E:", v.exception)
+local function makePretty(tbl)
+    if type(tbl) == "string" then
+        return tbl
+    end
+    local pattern = "\n  Patterns:"
+    if tbl.pattern then
+        if type(tbl.pattern) == "string" then
+            pattern = pattern .. "    " .. tbl.pattern .. "\n"
         else
-            print("Filter:", v)
+            for _, p in ipairs(tbl.pattern) do
+               pattern = pattern .. "    " ..  p .. "\n"  
+            end
+        end
+        if tbl.exception then
+            pattern = pattern .. "\n  Exceptions:"
+            if type(tbl.exception) == "string" then
+                pattern = pattern .. "    " .. tbl.exception .. "\n"
+            else
+                for _, e in ipairs(tbl.exception) do
+                    pattern = pattern .. "    " ..  e .. "\n"  
+                end
+            end
+        end
+        return pattern
+    end
+    for _, p in ipairs(tbl) do
+        pattern = pattern .. "    " ..  p .. "\n"  
+    end
+    return pattern
+end
+
+local function listFilters()
+    for i, v in ipairs(filters) do
+        if v.pattern then
+            print(string.format("Except: ID:%d P: %s E: %s", i , makePretty(v)))
+        else
+            print(string.format("Filter: ID:%d %s", i, makePretty(v)))
         end
     end
 end
@@ -324,7 +355,7 @@ ChatFrame_AddMessageEventFilter("CHAT_MSG_CHANNEL", FilterBoostMessages)
 -------------------------------------------------------------------
 local function addHelp()
     local usage = [[
-Add usage:
+Add filter usage:
 you can use a single pattern, or multiple patterns,
 or single or multiple patterns with single or multiple exceptions
 
@@ -412,37 +443,6 @@ local function buildFilter(thing)
     else 
         return buildFilterSimple(thing)
     end
-end
-
-local function makePretty(tbl)
-    if type(tbl) == "string" then
-        return tbl
-    end
-    local pattern = "\n  Patterns:"
-    if tbl.pattern then
-        if type(tbl.pattern) == "string" then
-            pattern = pattern .. "    " .. tbl.pattern .. "\n"
-        else
-            for _, p in ipairs(tbl.pattern) do
-               pattern = pattern .. "    " ..  p .. "\n"  
-            end
-        end
-        if tbl.exception then
-            pattern = pattern .. "\n  Exceptions:"
-            if type(tbl.exception) == "string" then
-                pattern = pattern .. "    " .. tbl.exception .. "\n"
-            else
-                for _, e in ipairs(tbl.exception) do
-                    pattern = pattern .. "    " ..  e .. "\n"  
-                end
-            end
-        end
-        return pattern
-    end
-    for _, p in ipairs(tbl) do
-        pattern = pattern .. "    " ..  p .. "\n"  
-    end
-    return pattern
 end
 
 local function handleAdd(args, msg)
