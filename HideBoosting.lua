@@ -400,10 +400,10 @@ Usage:")
 /hb filter   -- toggle filtering
 /hb add channel <channelName> -- add channelName to the filtered channels
 /hb add filter pattern[ ; pattern2... , exception ; exception2...] -- add pattern[s] with optional exceptions to the filters
-/hb add pack packname -- adds a predefined filter pack (see available packs with list pack)
+/hb add pack packname -- adds a predefined filter pack (see available packs with `list pack`)
 /hb remove channel <channelName> -- remove channelName from the filtered channels
-/hb remove filter "pattern" -- remove "pattern" from the filters
-/hb remove pack packname -- remove predefined filter pack (see available packs with list pack)
+/hb remove filter pattern -- remove pattern from the filters. You can use the pattern IDs (indices) from `list filter`
+/hb remove pack packname -- remove predefined filter pack (see available packs with `list pack`)
 /hb reset channel -- reset the filtered channels to the defaults
 /hb reset filter  -- reset the filters to the defaults
 /hb list channel  -- list the filtered
