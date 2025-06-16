@@ -261,7 +261,7 @@ end
 local function listFilters()
     for i, v in ipairs(filters) do
         if v.pattern then
-            print(string.format("Except: ID:%d P: %s E: %s", i , makePretty(v)))
+            print(string.format("Except: ID:%d %s", i , makePretty(v)))
         else
             print(string.format("Filter: ID:%d %s", i, makePretty(v)))
         end
