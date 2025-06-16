@@ -496,6 +496,18 @@ local function handleRemove(args, msg)
             print("HB:", thing, "wasn't in channels")
         end
     elseif args[2] == "filter" then
+        local index = tonumber(args[3])
+        if index then
+            if index <= #filters then
+                local filter = filters[index]
+                table.remove(filters, index)
+                print("HB: Removed filter:", makePretty(filter))
+            else
+                print("HB:", args[3], "was out of range!")
+            end
+            return
+        end
+
         local thing = table.concat({ select(3, unpack(args)) }, " ")
         thing = makePatternLower(thing)
         thing = buildFilter(thing)
