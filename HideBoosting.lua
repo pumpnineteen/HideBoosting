@@ -5,22 +5,23 @@ local default_filteredChannels = {
 }
 
 local default_filters = {
-    "bo[o]+st",
+    "b[o0][o0]+[s$]t",
     "xp%s+service",
     {
         pattern = "%f[%S]layer",
-        exception = "[<]",
+        exception = "[<]rend",
     },
     {
         pattern = "^layer",
-        exception = "[<]",
+        exception = "[<]rend",
     },
 }
 
 local filterPacks = {
     boost = {
-        "bo[o]+st",
+        "b[o0][o0]+[s$]t",
         "xp%s+service",
+        "wts%s+sfk"
     },
     layer = {
         {
