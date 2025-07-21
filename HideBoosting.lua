@@ -1,5 +1,3 @@
-HBSavedFilteredMessages = HBSavedFilteredMessages or {}
-
 local default_filteredChannels = {
     "lookingforgroup",
 }
@@ -611,10 +609,15 @@ end
 SLASH_HB1 = "/hb"
 SlashCmdList["HB"] = HandleHBCommand
 
+local function hideMessage()
+    print("Don't forget to refresh the filters with /hb reset filter, and to add/remove packs /hb list pack, /hb add pack pack_name !")
+end
+
 local f = CreateFrame("Frame")
 f:RegisterEvent("PLAYER_LOGIN")
 f:SetScript("OnEvent", function(self, event)
     HBOptions = HBOptions or {}
+    HBSavedFilteredMessages = HBSavedFilteredMessages or {}
     logging = HBOptions.logging or false
     stopFiltering = HBOptions.stopFiltering or false
     filteredChannels = HBOptions.filteredChannels or default_filteredChannels
@@ -624,4 +627,5 @@ f:SetScript("OnEvent", function(self, event)
     HBOptions.stopFiltering = stopFiltering
     HBOptions.filteredChannels = filteredChannels
     HBOptions.filters = filters
+    C_Timer.After(20, hideMessage)
 end)
