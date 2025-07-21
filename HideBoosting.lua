@@ -1,5 +1,3 @@
-HBSavedFilteredMessages = HBSavedFilteredMessages or {}
-
 local default_filteredChannels = {
     "lookingforgroup",
 }
@@ -19,7 +17,7 @@ local default_filters = {
 
 local filterPacks = {
     boost = {
-        "b[o0][o0]+[s$]t",
+        "b[o0][o0]+[s$]+t",
         "xp%s+service",
         "wts%s+sfk"
     },
@@ -33,6 +31,11 @@ local filterPacks = {
             exception = "[<]rend",
         },
     },
+    dmt = {
+        "wts.+dmt",
+        "wts.+dire maul",
+        "wtb.+dmt"
+    }
 }
 
 local SPLIT_EXCEPTION = "%s*,%s*"
@@ -333,12 +336,11 @@ local function FilterBoostMessages(self, event, msg, sender, languageName, chann
                         time = date("%Y-%m-%d %H:%M:%S"),
                         sender = sender,
                         channel = channelName,
-                        message = msg,
                         filter = patternException,
                         }
                         
                         -- Add the new entry to the saved variable table.
-                        table.insert(HBSavedFilteredMessages, logEntry)
+                        HBSavedFilteredMessages[msg] = logEntry
                         return true  -- Filter (hide) the message from the chat display.
                     end
                 end
@@ -407,6 +409,7 @@ Usage:")
 /hb remove pack packname -- remove predefined filter pack (see available packs with `list pack`)
 /hb reset channel -- reset the filtered channels to the defaults
 /hb reset filter  -- reset the filters to the defaults
+/hb reset log     -- clear the log
 /hb list channel  -- list the filtered
 /hb list filter   -- list the filters
 /hb list pack     -- list the available predefined filter packs
@@ -480,6 +483,7 @@ local function handleAdd(args, msg)
         end
     else 
         print("HB: Didn't recognise the arguments.", msg)
+        print("HB: valid options: channel, filter, pack")
     end
 end
 
@@ -528,6 +532,7 @@ local function handleRemove(args, msg)
         end
     else 
         print("HB: Didn't recognise the arguments.", msg)
+        print("HB: valid options: channel, filter, pack")
     end
 end
 
@@ -542,8 +547,11 @@ local function handleReset(args, msg)
     elseif args[2] == "filter" then
         filters = default_filters
         print("HB: Reset filters to default.")
+    elseif args[2] == "log" then
+        HBSavedFilteredMessages = {}
     else
         print("HB: Didn't recognise the arguments.", msg)
+        print("HB: valid options: channel, filter, log")
     end
 end
 
@@ -560,6 +568,7 @@ local function handleList(args, msg)
         listPacks()
     else
         print("HB: Didn't recognise the arguments.", msg)
+        print("HB: valid options: channel, filter, pack")
     end
 end
 
@@ -600,10 +609,15 @@ end
 SLASH_HB1 = "/hb"
 SlashCmdList["HB"] = HandleHBCommand
 
+local function hideMessage()
+    print("|c957DADFFHIDE BOOSTING|r: Don't forget to refresh the filters with /hb reset filter, and to add/remove packs /hb list pack, /hb add pack pack_name !")
+end
+
 local f = CreateFrame("Frame")
 f:RegisterEvent("PLAYER_LOGIN")
 f:SetScript("OnEvent", function(self, event)
     HBOptions = HBOptions or {}
+    HBSavedFilteredMessages = HBSavedFilteredMessages or {}
     logging = HBOptions.logging or false
     stopFiltering = HBOptions.stopFiltering or false
     filteredChannels = HBOptions.filteredChannels or default_filteredChannels
@@ -613,4 +627,5 @@ f:SetScript("OnEvent", function(self, event)
     HBOptions.stopFiltering = stopFiltering
     HBOptions.filteredChannels = filteredChannels
     HBOptions.filters = filters
+    C_Timer.After(20, hideMessage)
 end)
