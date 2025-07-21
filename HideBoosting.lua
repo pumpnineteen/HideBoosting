@@ -610,7 +610,7 @@ SLASH_HB1 = "/hb"
 SlashCmdList["HB"] = HandleHBCommand
 
 local function hideMessage()
-    print("Don't forget to refresh the filters with /hb reset filter, and to add/remove packs /hb list pack, /hb add pack pack_name !")
+    print("|c957DADFFHIDE BOOSTING|r: Don't forget to refresh the filters with /hb reset filter, and to add/remove packs /hb list pack, /hb add pack pack_name !")
 end
 
 local f = CreateFrame("Frame")
