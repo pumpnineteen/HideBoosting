@@ -19,7 +19,7 @@ local default_filters = {
 
 local filterPacks = {
     boost = {
-        "b[o0][o0]+[s$]t",
+        "b[o0][o0]+[s$]+t",
         "xp%s+service",
         "wts%s+sfk"
     },
@@ -33,6 +33,11 @@ local filterPacks = {
             exception = "[<]rend",
         },
     },
+    dmt = {
+        "wts.+dmt",
+        "wts.+dire maul",
+        "wtb.+dmt"
+    }
 }
 
 local SPLIT_EXCEPTION = "%s*,%s*"
@@ -333,12 +338,11 @@ local function FilterBoostMessages(self, event, msg, sender, languageName, chann
                         time = date("%Y-%m-%d %H:%M:%S"),
                         sender = sender,
                         channel = channelName,
-                        message = msg,
                         filter = patternException,
                         }
                         
                         -- Add the new entry to the saved variable table.
-                        table.insert(HBSavedFilteredMessages, logEntry)
+                        HBSavedFilteredMessages[msg] = logEntry
                         return true  -- Filter (hide) the message from the chat display.
                     end
                 end
@@ -407,6 +411,7 @@ Usage:")
 /hb remove pack packname -- remove predefined filter pack (see available packs with `list pack`)
 /hb reset channel -- reset the filtered channels to the defaults
 /hb reset filter  -- reset the filters to the defaults
+/hb reset log     -- clear the log
 /hb list channel  -- list the filtered
 /hb list filter   -- list the filters
 /hb list pack     -- list the available predefined filter packs
@@ -480,6 +485,7 @@ local function handleAdd(args, msg)
         end
     else 
         print("HB: Didn't recognise the arguments.", msg)
+        print("HB: valid options: channel, filter, pack")
     end
 end
 
@@ -528,6 +534,7 @@ local function handleRemove(args, msg)
         end
     else 
         print("HB: Didn't recognise the arguments.", msg)
+        print("HB: valid options: channel, filter, pack")
     end
 end
 
@@ -542,8 +549,11 @@ local function handleReset(args, msg)
     elseif args[2] == "filter" then
         filters = default_filters
         print("HB: Reset filters to default.")
+    elseif args[2] == "log" then
+        HBSavedFilteredMessages = {}
     else
         print("HB: Didn't recognise the arguments.", msg)
+        print("HB: valid options: channel, filter, log")
     end
 end
 
@@ -560,6 +570,7 @@ local function handleList(args, msg)
         listPacks()
     else
         print("HB: Didn't recognise the arguments.", msg)
+        print("HB: valid options: channel, filter, pack")
     end
 end
 
